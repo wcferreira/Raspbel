@@ -1,0 +1,34 @@
+sqlite> CREATE TABLE tbl_bel (
+   ...> id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+   ...> num_pacs TEXT NOT NULL,
+   ...> num_serie TEXT NOT NULL,
+   ...> id_radio TEXT NOT NULL,
+   ...> cod_equipamento TEXT NOT NULL,
+   ...> id_cba TEXT NOT NULL,
+   ...> personalidade TEXT NOT NULL,
+   ...> versao_fw TEXT NOT NULL,
+   ...> estado_cec TEXT NOT NULL,
+   ...> estado_ciclo TEXT NOT NULL,
+   ...> estado_maquina TEXT NOT NULL,
+   ...> dh_pacote TEXT NOT NULL,
+   ...> velocidade TEXT NOT NULL,
+   ...> heading TEXT NOT NULL,
+   ...> tamanho_imp TEXT NOT NULL,
+   ...> num_imp TEXT NOT NULL,
+   ...> latitude TEXT NOT NULL,
+   ...> longitude TEXT NOT NULL);
+
+sqlite> .tables
+tbl_bel
+
+sqlite> INSERT INTO tbl_bel (num_pacs, num_serie, id_radio, cod_equipamento, id_cba, personalidade, versao_fw, estado_cec, estado_ciclo, estado_maquina, dh_pacote,
+   ...> velocidade, heading, tamanho_imp, num_imp, latitude, longitude) VALUES ('1', '0', '0013A20040C893E5', '1003', '000016E26974', '32777', '1', '5', '0', '0',
+   ...> '09/08/2016 16:47','0', '0', '0', '0', '-22,3933669', '-55,204115');
+
+sqlite> SELECT id_radio, cod_equipamento, id_cba, personalidade, versao_fw, dh_pacote, latitude, longitude FROM tbl_bel;
+id_radio          cod_equipamento  id_cba        personalidade  versao_fw   dh_pacote         latitude     longitude 
+----------------  ---------------  ------------  -------------  ----------  ----------------  -----------  ----------
+0013A20040C893E5  1003             000016E26974  32777          1           09/08/2016 16:47  -22,3933669  -55,204115
+
+sqlite> 
+

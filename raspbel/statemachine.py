@@ -19,12 +19,12 @@ class StateMachine:
 		self.is_escape_char = False
 		
 	def __init__(self):
-		self.log = init_log(Define.FSM_DEBUG_DISABLED)
+		#self.log = init_log(Define.FSM_DEBUG_DISABLED)
 		self.init_fsm()
 		self.state = self.st_get_delimiter
 
 	def st_get_delimiter(self):
-		self.log.debug("State: Delimiter")
+		#self.log.debug("State: Delimiter")
 		if self.data_rx == Define.DELIMITER:
 			self.buffer.insert(self.index, self.data_rx)
 			self.index += 1
@@ -33,7 +33,7 @@ class StateMachine:
 			return self.st_get_delimiter
 
 	def st_get_length_lsb(self):
-		self.log.debug("State: Length LSB")
+		#elf.log.debug("State: Length LSB")
 
 		byte = self.data_rx
 		if byte == Define.ESCAPE:
@@ -53,7 +53,7 @@ class StateMachine:
 			return self.st_get_length_msb
 
 	def st_get_length_msb(self):
-		self.log.debug("State: Length MSB")
+		#self.log.debug("State: Length MSB")
 
 		byte = self.data_rx
 		if byte == Define.ESCAPE:
@@ -71,7 +71,7 @@ class StateMachine:
 			self.buffer.insert(self.index, byte)
 			self.length = int.from_bytes(self.buffer[1:3], byteorder='big') - 1 # Get rid of Checksum (1byte)
 			#self.log.debug("Length Parser: {}".format(self.length))
-			self.log.debug(self.buffer)
+			#self.log.debug(self.buffer)
 			self.index += 1
 			return self.st_get_data
 
@@ -82,11 +82,11 @@ class StateMachine:
 		#self.log.debug("@@@ Length @@@: {}".format(self.length))
 
 		if  self.cnt < self.length:
-			self.log.debug("Count: {}".format(self.cnt))
-			self.log.debug("State: Frame ID")
+			#self.log.debug("Count: {}".format(self.cnt))
+			#self.log.debug("State: Frame ID")
 
 			if self.data_rx == Define.ESCAPE:
-				self.log.debug("I've got a escape character")
+				#self.log.debug("I've got a escape character")
 				self.is_escape_char = True
 			else:
 				if self.is_escape_char == True:
@@ -104,7 +104,7 @@ class StateMachine:
 			return self.get_checksum
 
 	def get_checksum(self):
-		self.log.debug("State: Checksum")
+		#self.log.debug("State: Checksum")
 
 		byte = self.data_rx
 		if byte == Define.ESCAPE:
@@ -119,7 +119,7 @@ class StateMachine:
 
 		if self.is_escape_char == False:
 			self.buffer.insert(self.index, byte)
-			self.log.debug("Writing CSV file ...")
+			#self.log.debug("Writing CSV file ...")
 			log_bel(self.buffer)
 			self.init_fsm()
 			del self.buffer[:]
