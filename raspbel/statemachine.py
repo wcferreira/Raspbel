@@ -6,28 +6,10 @@ import sys
 import time
 from define import Define
 from dump import *
+from log import init_log
 from logbel import *
 
 class StateMachine:
-
-	def init_log(self):
-		# create logger
-		self.log = logging.getLogger(__name__)
-		self.log.setLevel(logging.DEBUG)
-		self.log.disabled = Define.FSM_DEBUG_DISABLED
-		# create console handler and set level to debug
-		ch = logging.StreamHandler()
-		ch.setLevel(logging.DEBUG)
-
-		# create formatter
-		formatter = logging.Formatter("%(asctime)s - [ %(levelname)-8s] : %(message)s", "%Y-%m-%d %H:%M:%S")
-
-		# add formatter to ch
-		ch.setFormatter(formatter)
-
-		# add ch to logger
-		self.log.addHandler(ch)
-
 	def init_fsm(self):
 		self.buffer = []
 		self.index = 0
@@ -37,8 +19,8 @@ class StateMachine:
 		self.is_escape_char = False
 		
 	def __init__(self):
+		self.log = init_log(Define.FSM_DEBUG_DISABLED)
 		self.init_fsm()
-		self.init_log()
 		self.state = self.st_get_delimiter
 
 	def st_get_delimiter(self):

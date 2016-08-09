@@ -4,26 +4,8 @@ import csv
 import logging
 import os.path
 from define import Define
+from log import init_log
 from parser import *
-
-def init_log():
-	# create logger
-	log = logging.getLogger(__name__)
-	log.setLevel(logging.DEBUG)
-	log.disabled = Define.PARSER_DEBUG_DISABLED
-	# create console handler and set level to debug
-	ch = logging.StreamHandler()
-	ch.setLevel(logging.DEBUG)
-
-	# create formatter
-	formatter = logging.Formatter("%(asctime)s - [ %(levelname)-8s] : %(message)s", "%Y-%m-%d %H:%M:%S")
-
-	# add formatter to ch
-	ch.setFormatter(formatter)
-
-	# add ch to logger
-	log.addHandler(ch)
-	return log
 
 def get_row(p):
 	
@@ -35,7 +17,7 @@ def get_row(p):
 	return bel_list
 
 def log_bel(frame):
-	log = init_log()
+	log = init_log(Define.PARSER_DEBUG_DISABLED)
 	p = Parser(frame)
 	file_exists = os.path.isfile('bel.csv')
 
