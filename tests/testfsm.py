@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # -*- coding: utf-8 -*-
-from fsm import *
+from statemachine import *
 
 if __name__ == "__main__":
 
@@ -17,16 +17,17 @@ if __name__ == "__main__":
 	           0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x31, 0xC8, 0xB4, 0x9C]
 
 	index = 0
-	fsm = FSM()
+	fsm = StateMachine()
 	print("Payload length: {}".format(len(payload)))
-	while index < len(payload):
+	while True:
 		try:
-			print("Index: {}".format(index))
-			fsm.run(payload[index])
-			index += 1
+			if index > len(payload) - 1:
+				index = 0
+			else:
+				print("Index: {}".format(index))
+				fsm.run(payload[index])
+				index += 1
 		except KeyboardInterrupt:
 			print('Bye')
-			ser.close()
 			sys.exit()
 
-	sys.exit()
