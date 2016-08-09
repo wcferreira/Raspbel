@@ -5,13 +5,7 @@ import time
 import sys
 from logbel import *
 from dump import *
-
-class Define:
-	DELIMITER = 0x7e
-	BEL = 0x07
-	FRAME_ID = 0x90
-	ESCAPE = 0x7d
-
+from define import Define
 
 class StateMachine:
 	def init_fsm(self):
