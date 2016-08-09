@@ -7,3 +7,5 @@ class Define:
 	BEL = 0x07
 	FRAME_ID = 0x90
 	ESCAPE = 0x7d
+	FSM_DEBUG_DISABLED = True
+	PARSER_DEBUG_DISABLED = False
