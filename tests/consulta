@@ -25,7 +25,7 @@ sqlite> INSERT INTO tbl_bel (num_pacs, num_serie, id_radio, cod_equipamento, id_
    ...> velocidade, heading, tamanho_imp, num_imp, latitude, longitude) VALUES ('1', '0', '0013A20040C893E5', '1003', '000016E26974', '32777', '1', '5', '0', '0',
    ...> '09/08/2016 16:47','0', '0', '0', '0', '-22,3933669', '-55,204115');
 
-sqlite> SELECT id_radio, cod_equipamento, id_cba, personalidade, versao_fw, dh_pacote, latitude, longitude FROM tbl_bel;
+sqlite> SELECT id, id_radio, cod_equipamento, id_cba, personalidade, versao_fw, dh_pacote, latitude, longitude FROM tbl_bel;
 id_radio          cod_equipamento  id_cba        personalidade  versao_fw   dh_pacote         latitude     longitude 
 ----------------  ---------------  ------------  -------------  ----------  ----------------  -----------  ----------
 0013A20040C893E5  1003             000016E26974  32777          1           09/08/2016 16:47  -22,3933669  -55,204115

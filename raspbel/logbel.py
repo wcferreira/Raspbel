@@ -4,7 +4,7 @@ import csv
 import logging
 import os.path
 from define import Define
-from log import init_log
+from log import *
 from parser import *
 
 def get_row(p):
@@ -17,7 +17,8 @@ def get_row(p):
 	return bel_list
 
 def log_bel(frame):
-	log = init_log(Define.PARSER_DEBUG_DISABLED)
+	logger = Logger(Define.PARSER_DEBUG_DISABLED)
+	log = logger.get_instance()
 	p = Parser(frame)
 	file_exists = os.path.isfile('bel.csv')
 

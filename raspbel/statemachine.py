@@ -19,7 +19,8 @@ class StateMachine:
 		self.is_escape_char = False
 		
 	def __init__(self):
-		#self.log = init_log(Define.FSM_DEBUG_DISABLED)
+		self.logger = Logger(Define.FSM_DEBUG_DISABLED)
+		self.log = self.logger.get_instance()
 		self.init_fsm()
 		self.state = self.st_get_delimiter
 
@@ -48,7 +49,6 @@ class StateMachine:
 
 		if self.is_escape_char == False:
 			self.buffer.insert(self.index, byte)
-			#self.log.debug("Length LSB: {:02x}".format(byte))
 			self.index += 1
 			return self.st_get_length_msb
 
@@ -67,24 +67,15 @@ class StateMachine:
 				byte = self.data_rx ^ 0x20
 
 		if self.is_escape_char == False:
-			#self.log.debug("Length MSB: {:02x}".format(byte))
 			self.buffer.insert(self.index, byte)
 			self.length = int.from_bytes(self.buffer[1:3], byteorder='big') - 1 # Get rid of Checksum (1byte)
-			#self.log.debug("Length Parser: {}".format(self.length))
-			#self.log.debug(self.buffer)
 			self.index += 1
 			return self.st_get_data
 
 	def st_get_data(self):
 		byte = self.data_rx
 
-		#self.log.debug("Escape: {}".format(self.is_escape_char))
-		#self.log.debug("@@@ Length @@@: {}".format(self.length))
-
 		if  self.cnt < self.length:
-			#self.log.debug("Count: {}".format(self.cnt))
-			#self.log.debug("State: Frame ID")
-
 			if self.data_rx == Define.ESCAPE:
 				#self.log.debug("I've got a escape character")
 				self.is_escape_char = True
