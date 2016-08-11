@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 # -*- coding: utf-8 -*-
-from statemachine import *
 import serial
+from belfsm import *
 
 if __name__ == "__main__":
 	ser = serial.Serial(
