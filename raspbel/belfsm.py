@@ -4,10 +4,9 @@
 import logging
 import sys
 import time
-from define import Define
-from dump import *
-from log import init_log
-from logbel import *
+from beldefine import Define
+from bellog import *
+from bellogger import *
 
 class StateMachine:
 	def init_fsm(self):
@@ -19,13 +18,13 @@ class StateMachine:
 		self.is_escape_char = False
 		
 	def __init__(self):
-		self.logger = Logger(Define.FSM_DEBUG_DISABLED)
+		self.logger = Logger(Define.BELFSM_DEBUG_DISABLED)
 		self.log = self.logger.get_instance()
 		self.init_fsm()
 		self.state = self.st_get_delimiter
 
 	def st_get_delimiter(self):
-		#self.log.debug("State: Delimiter")
+		self.log.debug("State: Delimiter")
 		if self.data_rx == Define.DELIMITER:
 			self.buffer.insert(self.index, self.data_rx)
 			self.index += 1
@@ -34,16 +33,16 @@ class StateMachine:
 			return self.st_get_delimiter
 
 	def st_get_length_lsb(self):
-		#elf.log.debug("State: Length LSB")
+		self.log.debug("State: Length LSB")
 
 		byte = self.data_rx
 		if byte == Define.ESCAPE:
-			#self.log.debug("I've got a escape character")
+			self.log.debug("I've got a escape character")
 			self.is_escape_char = True
 			return self.st_get_length_lsb
 		else:
 			if self.is_escape_char == True:
-				#self.log.debug("Treating escape character")
+				self.log.debug("Treating escape character")
 				self.is_escape_char = False
 				byte = self.data_rx ^ 0x20
 
@@ -53,16 +52,16 @@ class StateMachine:
 			return self.st_get_length_msb
 
 	def st_get_length_msb(self):
-		#self.log.debug("State: Length MSB")
+		self.log.debug("State: Length MSB")
 
 		byte = self.data_rx
 		if byte == Define.ESCAPE:
-			#self.log.debug("I've got a escape character")
+			self.log.debug("I've got a escape character")
 			self.is_escape_char = True
 			return self.st_get_length_msb
 		else:
 			if self.is_escape_char == True:
-				#self.log.debug("Treating escape character")
+				self.log.debug("Treating escape character")
 				self.is_escape_char = False
 				byte = self.data_rx ^ 0x20
 
@@ -77,11 +76,11 @@ class StateMachine:
 
 		if  self.cnt < self.length:
 			if self.data_rx == Define.ESCAPE:
-				#self.log.debug("I've got a escape character")
+				self.log.debug("I've got a escape character")
 				self.is_escape_char = True
 			else:
 				if self.is_escape_char == True:
-					#self.log.debug("Treating escape character")
+					self.log.debug("Treating escape character")
 					self.is_escape_char = False
 					byte = self.data_rx ^ 0x20
 
@@ -95,22 +94,22 @@ class StateMachine:
 			return self.get_checksum
 
 	def get_checksum(self):
-		#self.log.debug("State: Checksum")
+		self.log.debug("State: Checksum")
 
 		byte = self.data_rx
 		if byte == Define.ESCAPE:
-			#self.log.debug("I've got a escape character")
+			self.log.debug("I've got a escape character")
 			self.is_escape_char = True
 			return self.get_checksum
 		else:
 			if self.is_escape_char == True:
-				#self.log.debug("Treating escape character")
+				self.log.debug("Treating escape character")
 				self.is_escape_char = False
 				byte = self.data_rx ^ 0x20
 
 		if self.is_escape_char == False:
 			self.buffer.insert(self.index, byte)
-			#self.log.debug("Writing CSV file ...")
+			self.log.debug("Writing CSV file ...")
 			log_bel(self.buffer)
 			self.init_fsm()
 			del self.buffer[:]
@@ -119,4 +118,3 @@ class StateMachine:
 	def run(self, data_rx):
 		self.data_rx = data_rx
 		self.state = self.state()
-
