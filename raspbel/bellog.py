@@ -3,12 +3,12 @@
 import csv
 import logging
 import os.path
-from define import Define
-from log import *
-from parser import *
+from belbd import *
+from belcsv import *
+from bellogger import *
+from belparser import *
 
 def get_row(p):
-	
 	bel_list = [( p.get_num_pacs(), p.get_num_serie(), p.get_id_radio(), p.get_cod_equipamento(), p.get_id_cba(), \
 		          p.get_personalidade(), p.get_versao_fw(), p.get_estado_cec(), p.get_estado_ciclo(), \
 	              p.get_estado_maquina(), p.get_data_hora(), p.get_speed(), p.get_heading(), \
@@ -16,23 +16,18 @@ def get_row(p):
 	            )]
 	return bel_list
 
+
 def log_bel(frame):
-	logger = Logger(Define.PARSER_DEBUG_DISABLED)
+	# Getting instance of log
+	logger = Logger(Define.BELLOG_DEBUG_DISABLED)
 	log = logger.get_instance()
+
+	# Getting parser object
 	p = Parser(frame)
-	file_exists = os.path.isfile('bel.csv')
 
-	with open('bel.csv', 'a') as belfile:	
-		headers = ['NumPacs', 'NumSerie', 'IDRadio', 'CodEquipamento', 'IDCBA', 
-		           'Personalidade', 'VersaoFW', 'EstadoCEC', 'EstadoCiclo', 
-		           'EstadoMaquina', 'DHPacote', 'Velocidade', 'Heading', 
-		           'TamanhoImp', 'NumImo', 'Lat', 'Long'
-		          ]
+	# Write frame to csv file
+	log.debug("Receiving Bel package from radio: {}".format(p.get_id_radio()))
+	write_to_file(get_row(p))
 
-		f_bel = csv.writer(belfile)
-
-		if not file_exists:
-			f_bel.writerow(headers)
-
-		log.debug("Receiving Bel package from radio: {}".format(p.get_id_radio()))
-		f_bel.writerows(get_row(p))
+	# Save frame to DB
+	save_to_db(get_row(p))
